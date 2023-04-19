@@ -332,6 +332,15 @@ void remover_ocorrencia_temperatura(t_lse* lista_temp){
     
 }
 
+void imprimir_intervalo(t_lse* lista_temp, int x, int y){
+    temp* ocorrencia_;
+    
+    for(int i=x;i<=y;i++){
+        ocorrencia_ = acessar_lse(lista_temp,i);
+        imprimir_ocorrencia_temperatura(ocorrencia_);
+    }
+}
+
 
 
 int main(int argc, char const *argv[]){
