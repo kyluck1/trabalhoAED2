@@ -306,7 +306,7 @@ int main(int argc, char const *argv[]){
 
     int seq_,dia_, mes_, ano_,  hora_,  minuto_, radiacao_solar_;
     double temperatura_, umidade_relativa_;
-   for(int i =0; i<5;i++ ){
+   for(int i =0; i<1;i++ ){
         scanf("%d%d%d%d%d%d%d%lf%lf", &seq_, &dia_, &mes_, &ano_, &hora_, &minuto_, &radiacao_solar_, &temperatura_, &umidade_relativa_);
         temp* ocorrencia = cria_ocorrtem(seq_, dia_, mes_, ano_, hora_, minuto_, radiacao_solar_, temperatura_, umidade_relativa_);
         inserir_final_lse(ocorrencias_temperatura, ocorrencia);
