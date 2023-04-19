@@ -215,3 +215,103 @@ void* remover_lse(t_lse* lse, void* chave){
     return carga; 
 
 }
+
+typedef struct ocorrencia_temp temp;
+
+struct ocorrencia_temp{
+    int seq;
+    int dia;
+    int mes;
+    int ano;
+    int hora;
+    int minuto;
+    int radiacao_solar;
+    double temperatura;
+    double umidade_relativa;
+};
+
+typedef struct ocorrencia_massadear vento;
+struct ocorrencia_massadear{
+    int seq;
+    int dia;
+    int mes;
+    int ano;
+    int hora;
+    int minuto;
+    double velocidade_media;
+    double velocidade_instantanea;
+    int direcao;
+};
+
+
+temp* cria_ocorrtem(int seq_, int dia_, int mes_, int ano_, int hora_, int minuto_, int radiacao_solar_, double temperatura_, double umidade_relativa_){
+
+    temp* ocorrtemp = malloc(sizeof(temp));
+    ocorrtemp->seq = seq_;
+    ocorrtemp->dia = dia_;
+    ocorrtemp->mes = mes_;
+    ocorrtemp->ano = ano_;
+    ocorrtemp->hora=hora_;
+    ocorrtemp->minuto = minuto_;
+    ocorrtemp->radiacao_solar = radiacao_solar_;
+    ocorrtemp->temperatura = temperatura_;
+    ocorrtemp-> umidade_relativa = umidade_relativa_;
+
+
+    return ocorrtemp;
+
+}
+
+void imprimir_ocorrencia_temperatura(void* ocorrencia_){
+    temp* ocorrencia = ocorrencia_;
+    printf("%d %02d/%02d/%d %02d:%02d %d %.2lf %.2lf\n", ocorrencia-> seq, ocorrencia->dia, ocorrencia->mes, ocorrencia->ano, ocorrencia->hora, ocorrencia->minuto, ocorrencia->radiacao_solar, ocorrencia->temperatura, ocorrencia->umidade_relativa);
+
+}
+
+
+
+vento* cria_ocorrmassa(int seq_, int dia_, int mes_, int ano_, int hora_, int minuto_, double velocidade_media_, double velocidade_instantanea_, int direcao_){
+    vento* ocorrmassa = malloc(sizeof(vento));
+    ocorrmassa->seq = seq_;
+    ocorrmassa->dia = dia_;
+    ocorrmassa->mes = mes_;
+    ocorrmassa->ano = ano_;
+    ocorrmassa->hora = hora_;
+    ocorrmassa->minuto = minuto_;
+    ocorrmassa->velocidade_media = velocidade_media_;
+    ocorrmassa->velocidade_instantanea = velocidade_instantanea_;
+    ocorrmassa->direcao = direcao_; 
+
+    return ocorrmassa;
+
+}
+
+void imprimir_ocorrencia_massa(void* ocorrencia_){
+    vento* ocorrencia = ocorrencia_;
+
+    printf("%d %02d/%02d/%d %02d:%02d %.2lf %.2lf %d\n", ocorrencia->seq, ocorrencia->dia, ocorrencia->mes, ocorrencia->ano, ocorrencia->hora, ocorrencia->minuto, ocorrencia->velocidade_media, ocorrencia->velocidade_instantanea, ocorrencia->direcao);
+
+}
+
+
+int main(int argc, char const *argv[]){
+    /*const int tipo = (int) argv[1][0]-48;
+    const char* nome_arquivo = argv[2];
+    FILE *arq = fopen(nome_arquivo, "r");
+    fscanf(arq,<mascara>,<lista de variaveis>);
+
+    */
+   
+   t_lse* ocorrencias_temperatura = criar_lse(imprimir_ocorrencia_temperatura,NULL);
+
+    int seq_,dia_, mes_, ano_,  hora_,  minuto_, radiacao_solar_;
+    double temperatura_, umidade_relativa_;
+   for(int i =0; i<5;i++ ){
+        scanf("%d%d%d%d%d%d%d%lf%lf", &seq_, &dia_, &mes_, &ano_, &hora_, &minuto_, &radiacao_solar_, &temperatura_, &umidade_relativa_);
+        temp* ocorrencia = cria_ocorrtem(seq_, dia_, mes_, ano_, hora_, minuto_, radiacao_solar_, temperatura_, umidade_relativa_);
+        inserir_final_lse(ocorrencias_temperatura, ocorrencia);
+   }
+
+   imprimir_lse(ocorrencias_temperatura);
+}
+
