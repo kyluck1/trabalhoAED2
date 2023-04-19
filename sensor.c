@@ -292,6 +292,46 @@ void imprimir_ocorrencia_massa(void* ocorrencia_){
     printf("%d %02d/%02d/%d %02d:%02d %.2lf %.2lf %d\n", ocorrencia->seq, ocorrencia->dia, ocorrencia->mes, ocorrencia->ano, ocorrencia->hora, ocorrencia->minuto, ocorrencia->velocidade_media, ocorrencia->velocidade_instantanea, ocorrencia->direcao);
 
 }
+int comparar_eventosTemp(void* ocorr1_, void* ocorr2_){
+    
+        
+    temp* ocorr1 = ocorr1_;
+    temp* ocorr2 = ocorr2_;
+
+    int res = 0;
+    if(ocorr1->dia == ocorr2->dia && ocorr1->mes == ocorr2->mes && ocorr1->ano == ocorr2->ano && ocorr1->hora == ocorr2->hora && ocorr1->minuto == ocorr2->minuto){
+        res = 1;
+    }
+    return res;
+    
+}
+
+void remover_ocorrencia_temperatura(t_lse* lista_temp){
+
+    int dia_,mes_,ano_,hora_,min_;
+    scanf("%d%d%d %d%d", &dia_,&mes_,&ano_,&hora_,&min_);
+    temp* ocorrencia_;
+    ocorrencia_->dia = dia_;
+    ocorrencia_->mes=mes_;
+    ocorrencia_->ano=ano_;
+    ocorrencia_->hora = hora_;
+    ocorrencia_->minuto = min_;
+
+    temp* t;
+
+    t = buscar_lse( lista_temp, ocorrencia_);
+    if(t){
+        imprimir_ocorrencia_temperatura(t);
+        t = remover_lse(lista_temp, ocorrencia_);
+    }
+
+    if(t){
+        imprimir_ocorrencia_temperatura(t);
+        free(t);
+    }
+    
+}
+
 
 
 int main(int argc, char const *argv[]){
@@ -302,16 +342,21 @@ int main(int argc, char const *argv[]){
 
     */
    
-   t_lse* ocorrencias_temperatura = criar_lse(imprimir_ocorrencia_temperatura,NULL);
+   t_lse* ocorrencias_temperatura = criar_lse(imprimir_ocorrencia_temperatura,comparar_eventosTemp);
 
     int seq_,dia_, mes_, ano_,  hora_,  minuto_, radiacao_solar_;
     double temperatura_, umidade_relativa_;
-   for(int i =0; i<1;i++ ){
+   for(int i =0; i<2;i++ ){
         scanf("%d%d%d%d%d%d%d%lf%lf", &seq_, &dia_, &mes_, &ano_, &hora_, &minuto_, &radiacao_solar_, &temperatura_, &umidade_relativa_);
         temp* ocorrencia = cria_ocorrtem(seq_, dia_, mes_, ano_, hora_, minuto_, radiacao_solar_, temperatura_, umidade_relativa_);
         inserir_final_lse(ocorrencias_temperatura, ocorrencia);
    }
 
    imprimir_lse(ocorrencias_temperatura);
+
+    remover_ocorrencia_temperatura(ocorrencias_temperatura);
+
+    imprimir_lse(ocorrencias_temperatura);
+
 }
 
