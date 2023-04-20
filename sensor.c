@@ -2,6 +2,7 @@
 #include "stdlib.h"
 #include "string.h"
 #include "listase.h"
+#include "listase.c"
 
 
 
@@ -18,6 +19,7 @@ struct ocorrencia_temp{
     int radiacao_solar;
     double temperatura;
     double umidade_relativa;
+    int chave;
 };
 
 typedef struct ocorrencia_massadear vento;
@@ -46,9 +48,10 @@ temp* cria_ocorrtem(int seq_, int dia_, int mes_, int ano_, int hora_, int minut
     ocorrtemp->radiacao_solar = radiacao_solar_;
     ocorrtemp->temperatura = temperatura_;
     ocorrtemp-> umidade_relativa = umidade_relativa_;
-
+    ocorrtemp->chave = dia_+mes_+ano_+hora_+minuto_;
 
     return ocorrtemp;
+    
 
 }
 
@@ -88,74 +91,133 @@ int comparar_eventosTemp(void* ocorr1_, void* ocorr2_){
     temp* ocorr1 = ocorr1_;
     temp* ocorr2 = ocorr2_;
 
-    int res = 0;
-    if(ocorr1->dia == ocorr2->dia && ocorr1->mes == ocorr2->mes && ocorr1->ano == ocorr2->ano && ocorr1->hora == ocorr2->hora && ocorr1->minuto == ocorr2->minuto){
-        res = 1;
+    
+    if(ocorr1 == ocorr2){
+        return 1;
     }
-    return res;
+    return 0;
     
 }
 
-void remover_ocorrencia_temperatura(t_lse* lista_temp){
+temp* remover_ocorrencia_temperatura(t_lse* lista_temp, int dia_, int mes_, int ano_,  int hora_,  int minuto_){
 
-    int dia_,mes_,ano_,hora_,min_;
-    scanf("%d%d%d %d%d", &dia_,&mes_,&ano_,&hora_,&min_);
+    
     temp* ocorrencia_;
     ocorrencia_->dia = dia_;
-    ocorrencia_->mes=mes_;
-    ocorrencia_->ano=ano_;
+    ocorrencia_->mes = mes_;
+    ocorrencia_->ano = ano_;
     ocorrencia_->hora = hora_;
-    ocorrencia_->minuto = min_;
+    ocorrencia_->minuto = minuto_;
+    
 
     temp* t;
 
     t = buscar_lse( lista_temp, ocorrencia_);
+    imprimir_ocorrencia_temperatura(t);
+    
     if(t){
         imprimir_ocorrencia_temperatura(t);
         t = remover_lse(lista_temp, ocorrencia_);
-    }
-
-    if(t){
-        imprimir_ocorrencia_temperatura(t);
         free(t);
     }
-    
+
+
 }
 
 void imprimir_intervalo(t_lse* lista_temp, int x, int y){
     temp* ocorrencia_;
     
     for(int i=x;i<=y;i++){
+        
         ocorrencia_ = acessar_lse(lista_temp,i);
-        imprimir_ocorrencia_temperatura(ocorrencia_);
+        if(ocorrencia_!= NULL){
+            imprimir_ocorrencia_temperatura(ocorrencia_);
+        }  
     }
+}
+
+temp* acessar_ocorrencia(t_lse* lista_temp, int x){
+    temp* ocorrencia_;
+
+    ocorrencia_ = acessar_lse(lista_temp,x);
+    return ocorrencia_;
+}
+
+temp* buscar_ocorrencia(t_lse* lista_temp, int dia_, int mes_, int ano_, int hora_, int minuto_){
+
+    temp* ocorrencia_;
+    ocorrencia_->dia = dia_;
+    ocorrencia_->mes = mes_;
+    ocorrencia_->ano = ano_;
+    ocorrencia_->hora = hora_;
+    ocorrencia_->minuto = minuto_;
+
+    temp* busca = buscar_lse(lista_temp, ocorrencia_);
+
+    return busca;
+
+
+
 }
 
 
 
-int main(int argc, char const *argv[]){
+
+
+int main(){
     /*const int tipo = (int) argv[1][0]-48;
     const char* nome_arquivo = argv[2];
     FILE *arq = fopen(nome_arquivo, "r");
     fscanf(arq,<mascara>,<lista de variaveis>);
 
-    */
+    
    
-   t_lse* ocorrencias_temperatura = criar_lse(imprimir_ocorrencia_temperatura,comparar_eventosTemp);
+   
 
-    int seq_,dia_, mes_, ano_,  hora_,  minuto_, radiacao_solar_;
-    double temperatura_, umidade_relativa_;
-   for(int i =0; i<2;i++ ){
-        scanf("%d%d%d%d%d%d%d%lf%lf", &seq_, &dia_, &mes_, &ano_, &hora_, &minuto_, &radiacao_solar_, &temperatura_, &umidade_relativa_);
-        temp* ocorrencia = cria_ocorrtem(seq_, dia_, mes_, ano_, hora_, minuto_, radiacao_solar_, temperatura_, umidade_relativa_);
-        inserir_final_lse(ocorrencias_temperatura, ocorrencia);
-   }
+    
+   
+   
 
    imprimir_lse(ocorrencias_temperatura);
 
-    remover_ocorrencia_temperatura(ocorrencias_temperatura);
+    temp* temporaria = remover_ocorrencia_temperatura(ocorrencias_temperatura);
 
-    imprimir_lse(ocorrencias_temperatura);
+   // imprimir_lse(ocorrencias_temperatura);
+    
+    int n;
+    scanf("%d", &n);
 
+    temp* test2;
+
+    test2 = acessar_ocorrencia(ocorrencias_temperatura, n);
+    imprimir_ocorrencia_temperatura(test2);
+
+
+    scanf("%d%d%d%d%d", &dia_, &mes_,&ano_,&hora_,&minuto_);
+
+    test2 = buscar_ocorrencia(ocorrencias_temperatura, dia_,mes_,ano_,hora_,minuto_);
+    imprimir_ocorrencia_temperatura(test2);
+
+    */
+
+    int seq_,dia_, mes_, ano_,  hora_,  minuto_, radiacao_solar_;
+     double temperatura_, umidade_relativa_;
+    t_lse* ocorrencias_temperatura = criar_lse(imprimir_ocorrencia_temperatura,comparar_eventosTemp);
+    
+
+    for(int i =0; i<3;i++ ){
+        scanf("%d%d/%d/%d%d:%d%d%lf%lf", &seq_, &dia_, &mes_, &ano_, &hora_, &minuto_, &radiacao_solar_, &temperatura_, &umidade_relativa_);
+        temp* ocorrencia = cria_ocorrtem(seq_, dia_, mes_, ano_, hora_, minuto_, radiacao_solar_, temperatura_, umidade_relativa_);
+        inserir_final_lse(ocorrencias_temperatura, ocorrencia);
+   }
+   imprimir_lse(ocorrencias_temperatura);
+    char opcao; 
+    temp* temp_;
+    vento* vent_;
+    while(scanf("%c", &opcao)!='F'){
+        if(opcao == 'R'){
+            scanf("%d/%d/%d %d:%d", &dia_,&mes_, &ano_, &hora_, &minuto_);
+            temp_ = remover_ocorrencia_temperatura(ocorrencias_temperatura,dia_, mes_, ano_,  hora_,  minuto_ );
+        }
+    }
 }
-
