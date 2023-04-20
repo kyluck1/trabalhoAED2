@@ -48,7 +48,7 @@ temp* cria_ocorrtem(int seq_, int dia_, int mes_, int ano_, int hora_, int minut
     ocorrtemp->radiacao_solar = radiacao_solar_;
     ocorrtemp->temperatura = temperatura_;
     ocorrtemp-> umidade_relativa = umidade_relativa_;
-    ocorrtemp->chave = dia_+mes_+ano_+hora_+minuto_;
+    
 
     return ocorrtemp;
     
@@ -88,8 +88,8 @@ void imprimir_ocorrencia_massa(void* ocorrencia_){
 int comparar_eventosTemp(void* ocorr1_, void* ocorr2_){
     
         
-    temp* ocorr1 = ocorr1_;
-    temp* ocorr2 = ocorr2_;
+    temp* ocorr1 = ocorr2_;
+    temp* ocorr2 = ocorr1_;
 
     
     if(ocorr1->dia != ocorr2->dia){
