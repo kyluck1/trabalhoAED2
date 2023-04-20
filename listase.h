@@ -1,3 +1,5 @@
+
+
 typedef struct lse t_lse;
 typedef struct elem_lse t_elemento_lse;
 typedef void(*t_imprimir_lse)(void*);

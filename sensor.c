@@ -2,7 +2,7 @@
 #include "stdlib.h"
 #include "string.h"
 #include "listase.h"
-#include "listase.c"
+
 
 
 
@@ -211,22 +211,40 @@ int main(){
 
     int seq_,dia_, mes_, ano_,  hora_,  minuto_, radiacao_solar_;
      double temperatura_, umidade_relativa_;
-    t_lse* ocorrencias_temperatura = criar_lse(imprimir_ocorrencia_temperatura,comparar_eventosTemp);
+    t_lse* ocorrencias_temperatura = criar_lse(&imprimir_ocorrencia_temperatura,&comparar_eventosTemp);
     
 
-    for(int i =0; i<3;i++ ){
+    for(int i =0; i<10;i++ ){
         scanf("%d%d/%d/%d%d:%d%d%lf%lf", &seq_, &dia_, &mes_, &ano_, &hora_, &minuto_, &radiacao_solar_, &temperatura_, &umidade_relativa_);
         temp* ocorrencia = cria_ocorrtem(seq_, dia_, mes_, ano_, hora_, minuto_, radiacao_solar_, temperatura_, umidade_relativa_);
         inserir_final_lse(ocorrencias_temperatura, ocorrencia);
    }
    imprimir_lse(ocorrencias_temperatura);
     char opcao; 
+    int pos;
     temp* temp_;
     vento* vent_;
-    while(scanf("%c", &opcao)!='F'){
+
+    opcao = getchar();
+    while(opcao != 'F'){
+        
         if(opcao == 'R'){
-            scanf("%d/%d/%d %d:%d", &dia_,&mes_, &ano_, &hora_, &minuto_);
+            scanf("%d/%d/%d%d:%d", &dia_,&mes_, &ano_, &hora_, &minuto_);
+            temp_ = buscar_ocorrencia(ocorrencias_temperatura,1, 7, 2022,  0,  1 );
+            imprimir_ocorrencia_temperatura(temp_);
             temp_ = remover_ocorrencia_temperatura(ocorrencias_temperatura,dia_, mes_, ano_,  hora_,  minuto_ );
+        
+        }else if(opcao == 'A'){
+            scanf("%d", &pos);
+            temp_ = acessar_ocorrencia(ocorrencias_temperatura,pos);
+            imprimir_ocorrencia_temperatura(temp_);
+
+        }else if(opcao == 'B'){
+           printf("Entrei\n");
+           temp_ = buscar_ocorrencia(ocorrencias_temperatura, 1,7,2022,0,1);
+           imprimir_ocorrencia_temperatura(temp_);
         }
+
+       opcao = getchar();
     }
 }
