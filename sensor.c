@@ -92,10 +92,19 @@ int comparar_eventosTemp(void* ocorr1_, void* ocorr2_){
     temp* ocorr2 = ocorr2_;
 
     
-    if(ocorr1 == ocorr2){
-        return 1;
+    if(ocorr1->dia != ocorr2->dia){
+        return -1;
+    }else if(ocorr1->mes != ocorr2->mes){
+        return -1;
+    }else if(ocorr1->ano != ocorr2->ano){
+        return -1;
+    }else if(ocorr1->hora != ocorr2->hora){
+        return -1;
+    }else if(ocorr1->minuto != ocorr2->minuto){
+        return -1;
     }
-    return 0;
+
+    return 1;
     
 }
 
